@@ -1,0 +1,21 @@
+[package]
+name = "keccak256-cli"
+version = "0.1.0"
+edition = "2021"
+authors = ["Wasin Thonkaew <wasin@wasin.io>"]
+description = "keccak256 encryption cli program; accepts input text from stdin. Suitable for commandline users"
+repository = "https://github.com/haxpor/keccak256-cli"
+license = "MIT"
+keywords = ["keccak256", "encryption", "cli", "crypto"]
+categories = ["command-line-utilities"]
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sha3 = "0.10.1"
+clap = { version = "3.1.8", features = ["derive"] }
+
+[[bin]]
+name = "keccak256"
+path = "src/main.rs"
