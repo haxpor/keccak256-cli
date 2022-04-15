@@ -1,6 +1,6 @@
 [package]
 name = "keccak256-cli"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Wasin Thonkaew <wasin@wasin.io>"]
 description = "keccak256 encryption cli program; accepts input text from stdin. Suitable for commandline users"
