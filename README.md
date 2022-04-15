@@ -29,7 +29,7 @@ $ echo "approve(address spender, uint256 amount)" | keccak256 --method-id
 3. Additional with `--no-0x` flag
 
 ```
-$ echo "approve(address spender, uint256 amount)" | keccak256 --method-id
+$ echo "approve(address spender, uint256 amount)" | keccak256 --method-id --no-0x
 c292633e
 ```
 
