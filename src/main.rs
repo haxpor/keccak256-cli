@@ -59,44 +59,94 @@ fn main() {
                             let encrypted_bytes = hasher.finalize();
 
                             let mut encrypted_s = String::with_capacity(2 * encrypted_bytes.len());
+                            let mut has_error = false;
+                            let mut error: Option<std::fmt::Error> = None;
+
                             for byte in encrypted_bytes {
-                                _ = write!(encrypted_s, "{:02x}", byte);
+                                let res = write!(encrypted_s, "{:02x}", byte);
+                                if res.is_err() {
+                                    // NOTE: if error happens, we don't error
+                                    // out and quit now, but will print error
+                                    // along each line of output
+                                    error = Some(res.unwrap_err());
+                                    has_error = true;
+                                }
                             }
 
                             // output as per arguments supplied at command line
                             if cmd_args.is_method_id_output {
                                 if cmd_args.no_0x {
-                                    if cmd_args.is_include_input {
-                                        println!("{} {}", line, &encrypted_s[..4*2]);
+                                    if has_error {
+                                        if cmd_args.is_include_input {
+                                            println!("{} 'Error encoding; err={}'", line, error.unwrap());
+                                        }
+                                        else {
+                                            println!("'Error encoding; err={}'", error.unwrap());
+                                        }
                                     }
                                     else {
-                                        println!("{}", &encrypted_s[..4*2]);
+                                        if cmd_args.is_include_input {
+                                            println!("{} {}", line, &encrypted_s[..4*2]);
+                                        }
+                                        else {
+                                            println!("{}", &encrypted_s[..4*2]);
+                                        }
                                     }
                                 }
                                 else {
-                                    if cmd_args.is_include_input {
-                                        println!("{} 0x{}", line, &encrypted_s[..4*2]);
+                                    if has_error {
+                                        if cmd_args.is_include_input {
+                                            println!("{} 'Error encoding; err={}'", line, error.unwrap());
+                                        }
+                                        else {
+                                            println!("'Error encoding; err={}'", error.unwrap());
+                                        }
                                     }
                                     else {
-                                        println!("0x{}", &encrypted_s[..4*2]);
+                                        if cmd_args.is_include_input {
+                                            println!("{} 0x{}", line, &encrypted_s[..4*2]);
+                                        }
+                                        else {
+                                            println!("0x{}", &encrypted_s[..4*2]);
+                                        }
                                     }
                                 }
                             }
                             else {
                                 if cmd_args.no_0x {
-                                    if cmd_args.is_include_input {
-                                        println!("{} {}", line, encrypted_s);
+                                    if has_error {
+                                        if cmd_args.is_include_input {
+                                            println!("{} 'Error encoding; err={}'", line, error.unwrap());
+                                        }
+                                        else {
+                                            println!("'Error encoding; err={}'", error.unwrap());
+                                        }
                                     }
                                     else {
-                                        println!("{}", encrypted_s);
+                                        if cmd_args.is_include_input {
+                                            println!("{} {}", line, encrypted_s);
+                                        }
+                                        else {
+                                            println!("{}", encrypted_s);
+                                        }
                                     }
                                 }
                                 else {
-                                    if cmd_args.is_include_input {
-                                        println!("{} 0x{}", line, encrypted_s);
+                                    if has_error {
+                                        if cmd_args.is_include_input {
+                                            println!("{} 'Error encoding; err={}'", line, error.unwrap());
+                                        }
+                                        else {
+                                            println!("'Error encoding; err={}'", error.unwrap());
+                                        }
                                     }
                                     else {
-                                        println!("0x{}", encrypted_s);
+                                        if cmd_args.is_include_input {
+                                            println!("{} 0x{}", line, encrypted_s);
+                                        }
+                                        else {
+                                            println!("0x{}", encrypted_s);
+                                        }
                                     }
                                 }
                             }
@@ -165,8 +215,11 @@ This flag is meant to be used for a single line text input only.");
         // convert from bytes array into hex-string
         let mut encrypted_s = String::with_capacity(2 * encrypted_bytes.len());
         for byte in encrypted_bytes {
-            // FIXME: check the retunred result...
-            _ = write!(encrypted_s, "{:02x}", byte);
+            let res = write!(encrypted_s, "{:02x}", byte);
+            if res.is_err() {
+                eprintln!("Error encoding; err={}", res.unwrap_err());
+                std::process::exit(1);
+            }
         }
 
         // output as per arguments supplied at command line
