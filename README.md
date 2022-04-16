@@ -15,22 +15,22 @@ cargo install keccak256-cli
 1. Normal with no arguments
 
 ```
-$ echo "approve(address spender, uint256 amount)" | keccak256
-0xc292633e5eef92ab7edc697475bda42257ae9897c520dfbbd8cb1c43bbae73ea
+$ echo "approve(address,uint256)" | keccak256
+0x095ea7b334ae44009aa867bfb386f5c3b4b443ac6f0ee573fa91c4608fbadfba
 ```
 
 2. With `--method-id` flag to output as method id; suitable for method signature
 
 ```
-$ echo "approve(address spender, uint256 amount)" | keccak256 --method-id
-0xc292633e
+$ echo "approve(address,uint256)" | keccak256 --method-id
+0x095ea7b3
 ```
 
 3. Additional with `--no-0x` flag to avoid prefixed `0x`
 
 ```
-$ echo "approve(address spender, uint256 amount)" | keccak256 --method-id --no-0x
-c292633e
+$ echo "approve(address,uint256)" | keccak256 --method-id --no-0x
+095ea7b3
 ```
 
 4. Encode content of input file with various flags
